@@ -1,0 +1,16 @@
+1. Accept cookies popup modal
+If it's not handled properly, it can fail the test run. Test may fail with ElementClickInterceptedException
+
+2. Without proper explicit waits, the test may fail with find_element because not all elements are immediately present
+in DOM.
+
+3. File upload automation
+It's not recommended to automate file uploads. It requires navigation through the OS file upload window which Selenium
+WebDriver doesn't support. Also, uploading large files can take a long time.
+
+4. Accessing the page and submitting the form requires stable internet connection.
+
+5. All prerequisites named in readme file should be installed and configured properly so that the test can run
+successfully.
+
+
