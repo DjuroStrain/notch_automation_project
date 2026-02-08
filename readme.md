@@ -35,17 +35,6 @@ The test cases are designed to cover the following scenarios:
 
 These scenarios were chosen because they cover the most critical risks of the contact form.
 
-## Issues
-
-The test case that fails:
-- Submitting the contact form with empty mandatory fields.
-
-Issue: "What services do you need?" field is marked as mandatory but the validation message is not displayed and form
-is submitted without any errors.   
-Expected result: Validation message should be displayed and form should not be submitted.                  
-Actual result: Validation message is not displayed and form can be submitted without it.
-Comment: If the field is not mandatory the asterix (*) should not be displayed.
-
 ## Test Implementation
 The automation suite follows the Page Object Model pattern where test logic is separated from page interaction logic.
 
@@ -59,6 +48,17 @@ used to ensure stability and reliability.
 
 Hard assertion are used to verify the single expected result and soft assertion to verify multiple expected results.
 All test results are logged in Allure report with attached screenshots for failed tests.
+
+## Issues
+
+The test case that fails:
+- Submitting the contact form with empty mandatory fields.
+
+Issue: "What services do you need?" field is marked as mandatory but the validation message is not displayed and form
+is submitted without any errors.   
+Expected result: Validation message should be displayed and form should not be submitted.                  
+Actual result: Validation message is not displayed and form can be submitted without it.
+Comment: If the field is not mandatory the asterix (*) should not be displayed.
 
 ## Test Execution
 To run the tests, execute the following command in the terminal:
