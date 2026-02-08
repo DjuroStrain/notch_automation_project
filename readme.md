@@ -36,18 +36,16 @@ The test cases are designed to cover the following scenarios:
 These scenarios were chosen because they cover the most critical risks of the contact form.
 
 ## Test Implementation
-The automation suite follows the Page Object Model pattern where test logic is separated from page interaction logic.
-
-Each page action is created as a small, atomic method in a page object class (eg. insert text into single input field
-or click on a button).
-
-Test data as well as element locators are stored in separate files for better maintainability and readability.
-
-Tests are using explicit waits to ensure that the page is loaded before performing any actions. Hard coded waits are not 
-used to ensure stability and reliability.
-
-Hard assertion are used to verify the single expected result and soft assertion to verify multiple expected results.
-All test results are logged in Allure report with attached screenshots for failed tests.
+- The automation suite follows the Page Object Model pattern where test logic is separated from page interaction logic.  
+- Each page action is created as a small, atomic method in a page object class (eg. insert text into single input field
+or click on a button).  
+- Test data as well as element locators are stored in separate files for better maintainability and readability.  
+- Tests are using explicit waits to ensure that the page is loaded before performing any actions. Hard coded waits are not 
+used to ensure stability and reliability.  
+- Hard assertion are used to verify the single expected result and soft assertion to verify multiple expected results.  
+- Driver initialization and screenshot capture are configured in the conftest.py file as well as the browsers we want to
+run tests on depending on the operating system.
+- All test results are logged in Allure report with attached screenshots for failed tests.
 
 ## Issues
 
@@ -59,6 +57,24 @@ is submitted without any errors.
 Expected result: Validation message should be displayed and form should not be submitted.                  
 Actual result: Validation message is not displayed and form can be submitted without it.
 Comment: If the field is not mandatory the asterix (*) should not be displayed.
+
+## Improvements
+- Better naming of id-s for the elements.
+- Required fields validation messages can be improved, e.g. smaller size.
+- Some kind of legend to tell user that input fields with * are required.
+- Font size, input fields and buttons should be smaller in size (adjusting zooming doesn't help).
+
+## Risks
+- Accept cookies popup modal
+If it's not handled properly, it can fail the test run. Test may fail with ElementClickInterceptedException
+- Without proper explicit waits, the test may fail with find_element because not all elements are immediately present
+in DOM.
+- File upload automation
+It's not recommended to automate file uploads. It requires navigation through the OS file upload window which Selenium
+WebDriver doesn't support. Also, uploading large files can take a long time.
+- Accessing the page and submitting the form requires stable internet connection.
+- All prerequisites named in readme file should be installed and imported properly so that the test can run
+successfully.
 
 ## Test Execution
 To run the tests, execute the following command in the terminal:
@@ -75,5 +91,3 @@ To view the report, run the following command:
 allure serve allure-results
 ```
 This will open the Allure report in a web browser.
-
-

@@ -1,4 +1,0 @@
-1. Better naming of id-s for the elements.
-2. Required fields validation messages can be improved, e.g. smaller size.
-3. Some kind of legend to tell user that input fields with * are required.
-4. Font size, input fields and buttons should be smaller in size (adjusting zooming doesn't help).
