@@ -17,6 +17,7 @@ class TestData:
             "firstName": "Ivan",
             "lastName": "Horvat",
             "email": "ivan.horvat",
+            "neededServices": ["Custom Software Development", "Scrum Coaching"]
         }
 
         complete_user_data = {

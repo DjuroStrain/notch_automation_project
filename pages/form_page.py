@@ -8,14 +8,14 @@ class FormPage:
         self.driver = driver
 
     @staticmethod
-    def form_mandatory_components():
+    def form_mandatory_fields():
         return [
             (TestLocators.Form.first_name_input, "First name input"),
             (TestLocators.Form.last_name_input, "Last name input"),
             (TestLocators.Form.email_input, "Email input"),
             (TestLocators.Form.needed_services_container, "Needed services container"),
             (TestLocators.Form.privacy_policy_checkbox, "Privacy policy checkbox"),
-            (TestLocators.Form.send_msg_btn, "Send message button"),
+            (TestLocators.Form.send_msg_btn, "Send message button")
         ]
 
     @staticmethod

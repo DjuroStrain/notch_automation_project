@@ -22,11 +22,11 @@ class TestForm(BaseTest):
             logger.warning("Timeout occurred: %s", str(e))
             pass
 
-    @allure.title("Test mandatory form components visibility")
-    @allure.description("Verify that all mandatory form components are visible")
-    def test_mandatory_form_components(self):
+    @allure.title("Test mandatory form fields visibility")
+    @allure.description("Verify that all mandatory form fields are visible")
+    def test_mandatory_form_fields(self):
         form_page = FormPage(self.driver)
-        form_elements = form_page.form_mandatory_components()
+        form_elements = form_page.form_mandatory_fields()
         for locator, name in form_elements:
             form_el = page_nav.find_element(self.driver, *locator)
             check.is_true(form_el, f"{name} is visible")
