@@ -8,7 +8,11 @@ It uses Selenium WebDriver for running tests on multiple browsers based on Pytho
 - Python
   - pytest
   - pytest-selenium
-  - pytest-allure
+  - allure-pytest
+  - pytest-check
+
+> Note:
+Make sure that you have installed all the required dependencies before running the tests.
 
 ## Project Structure
 The project is organized as follows:
@@ -25,18 +29,33 @@ The goal of the automation suite is to validate the functionality of the contact
 The test cases are designed to cover the following scenarios:
 - Validating the mandatory contact form fields.
 - Submitting the contact form with mandatory valid data.
-- Submitting the contact form with all data.
 - Submitting the contact form with invalid email.
 - Submitting the contact form with empty mandatory fields.
-These scenarion were chosen because they cover the most critical risks of the contact form.
+- Submitting the contact form with all data.
+
+These scenarios were chosen because they cover the most critical risks of the contact form.
+
+
+The test case that fails:
+- Submitting the contact form with empty mandatory fields.
+
+Issue: "What services do you need?" field is marked as mandatory but the validation message is not displayed and form
+is submitted without any errors.   
+Expected result: Validation message should be displayed and form should not be submitted.                  
+Actual result: Validation message is not displayed and form can be submitted without it.
+Comment: If the field is not mandatory the asterix (*) should not be displayed.
 
 ## Test Implementation
 The automation suite follows the Page Object Model pattern where test logic is separated from page interaction logic.
+
 Each page action is created as a small, atomic method in a page object class (eg. insert text into single input field
-or click on a button)
+or click on a button).
+
 Test data as well as element locators are stored in separate files for better maintainability and readability.
+
 Tests are using explicit waits to ensure that the page is loaded before performing any actions. Hard coded waits are not 
 used to ensure stability and reliability.
+
 Hard assertion are used to verify the single expected result and soft assertion to verify multiple expected results.
 All test results are logged in Allure report with attached screenshots for failed tests.
 
@@ -44,6 +63,10 @@ All test results are logged in Allure report with attached screenshots for faile
 To run the tests, execute the following command in the terminal:
 ```bash
 pytest -v --alluredir=allure-results
+```
+To see logs in the terminal, run the following command:
+```bash
+pytest -v --alluredir=allure-results --log-cli-level=INFO
 ```
 This will run all the tests and generate an Allure report in the `allure-results` directory.
 To view the report, run the following command:

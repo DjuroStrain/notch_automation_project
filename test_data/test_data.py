@@ -1,12 +1,16 @@
 class TestData:
     class Cookies:
-        consent_cookie = {"domain": ".wearenotch.com", "expiry": 1801993993, "httpOnly": False, "name": "cookieyes-consent", "path": "/", "sameSite": "Strict", "secure": True, "value": "consentid:T0s5cjVJUW5rQ2VIeVVTVVNPa1V0bm9zQ0h5VlRwMUc,consent:yes,action:yes,necessary:yes,analytics:yes,advertisement:yes"}
+        consent_cookie = {"domain": ".wearenotch.com", "expiry": 1801993993, "httpOnly": False,
+                          "name": "cookieyes-consent", "path": "/", "sameSite": "Strict", "secure": True,
+                          "value": "consentid:T0s5cjVJUW5rQ2VIeVVTVVNPa1V0bm9zQ0h5VlRwMUc,consent:yes,action:yes,"
+                                   "necessary:yes,analytics:yes,advertisement:yes"}
 
     class UserData:
         mandatory_user_data = {
             "firstName": "Ivan",
             "lastName": "Horvat",
             "email": "ivan.horvat@gmail.com",
+            "neededServices": ["Custom Software Development", "Scrum Coaching"]
         }
 
         user_data_invalid_email = {

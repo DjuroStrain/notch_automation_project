@@ -13,6 +13,7 @@ class FormPage:
             (TestLocators.Form.first_name_input, "First name input"),
             (TestLocators.Form.last_name_input, "Last name input"),
             (TestLocators.Form.email_input, "Email input"),
+            (TestLocators.Form.needed_services_container, "Needed services container"),
             (TestLocators.Form.privacy_policy_checkbox, "Privacy policy checkbox"),
             (TestLocators.Form.send_msg_btn, "Send message button"),
         ]
@@ -23,6 +24,7 @@ class FormPage:
             (TestLocators.Form.first_name_validation_msg, "First name validation message"),
             (TestLocators.Form.last_name_validation_msg, "Last name validation message"),
             (TestLocators.Form.email_validation_msg, "Email validation message"),
+            (TestLocators.Form.needed_services_validation_msg, "Needed services validation message"),
             (TestLocators.Form.privacy_policy_checkbox_validation_msg, "Privacy policy checkbox validation message")
         ]
 
@@ -44,26 +46,28 @@ class FormPage:
     def input_project_details(self, project_details: str):
         PageNavigation.input_text(self.driver, *TestLocators.Form.project_details_container, text=project_details)
 
-    def select_how_did_you_hear_about_us(self, hear_about_us_option: str):
-        PageNavigation.select_option(self.driver, *TestLocators.Form.hear_about_us_select, option=hear_about_us_option)
-
-    def select_budget(self, budget_option: str):
-        PageNavigation.select_option(self.driver, *TestLocators.Form.budget_select, option=budget_option)
-
     # def select_how_did_you_hear_about_us(self, hear_about_us_option: str):
     #     PageNavigation.select_option(self.driver, *TestLocators.Form.hear_about_us_select, option=hear_about_us_option)
     #
     # def select_budget(self, budget_option: str):
     #     PageNavigation.select_option(self.driver, *TestLocators.Form.budget_select, option=budget_option)
 
+    def select_how_did_you_hear_about_us(self, hear_about_us_option: str):
+        PageNavigation.select_from_dropdown(self.driver, *TestLocators.Form.hear_about_us_dd, option=hear_about_us_option)
+
+    def select_budget(self, budget_option: str):
+        PageNavigation.select_from_dropdown(self.driver, *TestLocators.Form.budget_dd, option=budget_option)
+
     def select_needed_services(self, needed_services: list):
         for service in needed_services:
-            PageNavigation.click_on_element(self.driver, *(By.ID, service))
+            PageNavigation.click_on_element(self.driver, *(By.XPATH,
+                                                        f"//label[contains(text(), '{service}')]"))
 
     def fill_mandatory_fields(self, user):
         self.input_first_name(user["firstName"])
         self.input_last_name(user["lastName"])
         self.input_email(user["email"])
+        self.select_needed_services(user["neededServices"])
 
     def fill_all_fields(self, user):
         self.fill_mandatory_fields(user)

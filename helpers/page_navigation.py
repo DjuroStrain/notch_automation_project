@@ -1,33 +1,37 @@
-from selenium.common import TimeoutException
+import logging
+
+from selenium.common import TimeoutException, ElementNotInteractableException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common import NoSuchElementException
+from tests.conftest import driver
+
+
+logger = logging.getLogger(__name__)
 
 
 class PageNavigation:
     @staticmethod
     def find_element(driver, *element):
         """
-        Finds and returns a web element after waiting for its visibility within a specified timeout.
+        Finds an element on a web page using the provided driver and element locator.
 
-        The method waits for up to 10 seconds for the specified web element to become visible
-        before returning it. If the element is not found within the timeout period or any
-        exceptions occur during the process, the method safely returns None.
+        This method waits for up to 10 seconds to locate the desired element and ensures
+        that it is visible before returning it. If the element cannot be located within
+        the timeout period or if it remains invisible, appropriate exceptions are raised.
 
         :param driver: WebDriver instance responsible for controlling the browser.
-        :param element: The locator of the web element to wait for. This can be a tuple containing
+        :param element: The locator of the element to find. This can be a tuple containing
                         a By strategy (e.g., By.ID, By.CSS_SELECTOR) and the corresponding locator value.
-        :return: The located web element if it becomes visible within the timeout period; otherwise, None.
-        :rtype: WebElement | None
+        :return: The located WebElement.
+        :raises TimeoutException: Raised if the element does not become visible within 10 seconds.
         """
         wait = WebDriverWait(driver, 10)
         try:
             return wait.until(EC.visibility_of_element_located(element))
-        except NoSuchElementException:
-            return None
         except TimeoutException:
+            logger.error(f"Element with locator {element} not found on page.")
             return None
 
     @staticmethod
@@ -43,9 +47,13 @@ class PageNavigation:
         :param driver: WebDriver instance responsible for controlling the browser.
         :param element: The locator of the web element to wait for. This can be a tuple containing
                         a By strategy (e.g., By.ID, By.CSS_SELECTOR) and the corresponding locator value.
+        :raises TimeoutException: Raised if the element does not become clickable within 10 seconds.
         """
         wait = WebDriverWait(driver, 10)
-        wait.until(EC.element_to_be_clickable(element)).click()
+        try:
+            wait.until(EC.element_to_be_clickable(element)).click()
+        except TimeoutException:
+            raise TimeoutException(f"Element with locator {element} not clickable within 10 seconds.")
 
     @staticmethod
     def input_text(driver, *element, text):
@@ -53,11 +61,15 @@ class PageNavigation:
         Provides functionality to input text into a specific web element after ensuring its visibility.
 
         :param driver: WebDriver instance responsible for controlling the browser.
-        :param element: Locator of the web element (tuple consisting of locator strategy and value).
+        :param element: Locator of the web element. This can be a tuple containing
+                        a By strategy (e.g., By.ID, By.CSS_SELECTOR) and the corresponding locator value.
         :param text: The string value to be input into the web element.
         """
         wait = WebDriverWait(driver, 10)
-        wait.until(EC.visibility_of_element_located(element)).send_keys(text)
+        try:
+            wait.until(EC.visibility_of_element_located(element)).send_keys(text)
+        except TimeoutException:
+            raise TimeoutException(f"Element with locator {element} not visible within 10 seconds.")
 
     @staticmethod
     def select_option(driver, *element, option):
@@ -66,25 +78,26 @@ class PageNavigation:
         driver to interact with the interface.
 
         :param driver: WebDriver instance responsible for controlling the browser.
-        :param element: Locator strategy and locator for identifying the select element.
+        :param element: Locator of the select web element. This can be a tuple containing
+                        a By strategy (e.g., By.ID, By.CSS_SELECTOR) and the corresponding locator value.
         :param option: The value attribute of the option to be selected.
         :return: None
         """
-        select = Select(driver.find_element(*element))
+        select = Select(PageNavigation.find_element(driver, *element))
         select.select_by_value(option)
 
-    # @staticmethod
-    # def select_option(driver, *element, option):
-    #     """
-    #     Selects an option from a dropdown or similar UI element by simulating click operations.
-    #
-    #     This method performs two main actions:
-    #     1. Clicks on the provided UI element to open the dropdown or selection menu.
-    #     2. Locates and clicks on the desired option through its text representation.
-    #
-    #     :param driver: WebDriver instance responsible for controlling the browser.
-    #     :param element: Locator or reference to the UI element to be clicked to open the selection options.
-    #     :param option: The text value of the option to be selected.
-    #     """
-    #     PageNavigation.click_on_element(driver, *element)
-    #     PageNavigation.click_on_element(driver, By.XPATH, f"//li[contains(text(), '{option}')]")
+    @staticmethod
+    def select_from_dropdown(driver, *element, option):
+        """
+        Selects an option from a dropdown or similar UI element by simulating click operations.
+
+        This method performs two main actions:
+        1. Clicks on the provided UI element to open the dropdown or selection menu.
+        2. Locates and clicks on the desired option through its text representation.
+
+        :param driver: WebDriver instance responsible for controlling the browser.
+        :param element: Locator or reference to the UI element to be clicked to open the dropdown.
+        :param option: The text value of the dropdown option to be selected.
+        """
+        PageNavigation.click_on_element(driver, *element)
+        PageNavigation.click_on_element(driver, By.XPATH, f"//li[contains(text(), '{option}')]")
