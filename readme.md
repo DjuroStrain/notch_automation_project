@@ -35,6 +35,7 @@ The test cases are designed to cover the following scenarios:
 
 These scenarios were chosen because they cover the most critical risks of the contact form.
 
+## Issues
 
 The test case that fails:
 - Submitting the contact form with empty mandatory fields.
