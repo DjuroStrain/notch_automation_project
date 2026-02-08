@@ -16,11 +16,7 @@ logger = logging.getLogger(__name__)
 
 
 # Windows OS
-# @pytest.fixture(scope="session", params=["chrome", "firefox", "edge"])
-# def browser(request):
-#     return request.param
-
-@pytest.fixture(scope="session", params=["chrome"])
+@pytest.fixture(scope="session", params=["chrome", "firefox", "edge"])
 def browser(request):
     return request.param
 
